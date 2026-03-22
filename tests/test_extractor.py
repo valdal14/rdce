@@ -40,28 +40,19 @@ def test_extract_list_primitives():
     class Product(BaseModel):
         name: str
         tags: list[str]
-        
+
     schema = extract_schema(Product)
-    
-    assert schema == {
-        "name": "str",
-        "tags": ["str"]
-    }
+
+    assert schema == {"name": "str", "tags": ["str"]}
 
 
 def test_extract_list_models():
     class Address(BaseModel):
         city: str
-        
+
     class User(BaseModel):
         addresses: list[Address]
-        
+
     schema = extract_schema(User)
-    
-    assert schema == {
-        "addresses": [
-            {
-                "city": "str"
-            }
-        ]
-    }
+
+    assert schema == {"addresses": [{"city": "str"}]}
