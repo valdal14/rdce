@@ -48,14 +48,14 @@ def compare_payload(
             if not isinstance(actual_value, list):
                 errors.append(_build_error(path, "list", type(actual_value).__name__))
                 continue
-            
+
             # The schema list only has ONE rule (e.g., ["str"] or [{"ip": "str"}])
             inner_schema = expected_type[0]
-            
+
             # Loop through every item in the payload's array
             for index, item in enumerate(actual_value):
                 list_path = f"{path}[{index}]"
-                
+
                 # If the inner rule is a dictionary, recurse.
                 if isinstance(inner_schema, dict):
                     errors.extend(compare_payload(inner_schema, item, list_path))
