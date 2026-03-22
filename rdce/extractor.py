@@ -1,4 +1,5 @@
-from typing import Any, get_args, get_origin
+from types import UnionType
+from typing import Any, Union, get_args, get_origin
 
 from pydantic import BaseModel
 
@@ -34,6 +35,15 @@ def extract_schema(model: type[BaseModel]) -> dict[str, Any]:
             else:
                 # It's a list of normal primitives
                 schema[field_name] = [inner_type.__name__]
+
+        # Check if this is an Optional/Union (e.g., int | None)
+        elif get_origin(field_type) in (Union, UnionType):
+            # Grab the inner types (e.g., 'int' and 'NoneType')
+            inner_types = get_args(field_type)
+
+            # Create a tuple of their string names
+            # You can do this with a simple list comprehension or a small loop!
+            schema[field_name] = tuple(t.__name__ for t in inner_types)
 
         # It's a normal primitive (like str, int, bool)
         else:

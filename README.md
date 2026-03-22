@@ -7,14 +7,14 @@
 **Runtime Data Contract Enforcer**: A lightweight Python 3 library for recursively validating and diffing nested JSON payloads against explicit Pydantic schemas.
 
 ## Current Status
-🚀 **v0.1.0 Complete** 🚀
+🚀 **v0.2.0 Complete** 🚀
 The core recursive validation engine, Pydantic extractor, and public API are complete and fully tested with 100% coverage.
 
 ## 🌟 Features
 * **Pydantic Native:** Define your data contracts using standard Pydantic `BaseModel` classes.
 * **Recursive Type Validation:** Deeply inspects nested dictionaries and payloads without flattening them.
 * **Path Tracking:** Returns exact dot-notation breadcrumbs for schema drift (e.g., `user.address.zip_code`).
-* **Zero Bloat:** Built to do one thing perfectly—diffing data schemas.
+* **Zero Bloat:** Built to do one thing diffing data schemas.
 
 ---
 
