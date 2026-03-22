@@ -47,3 +47,25 @@ def test_nested_dictionary_mismatch():
 
     assert len(errors) == 1
     assert errors[0] == {"path": "user.metadata.is_admin", "expected": "bool", "actual": "str"}
+
+
+def test_compare_optional_and_union_types():
+    schema = {
+        "age": ("int", "NoneType"),
+        "nickname": ("str", "NoneType"),
+        # A pure union, no NoneType allowed
+        "status": ("str", "int")
+    }
+    
+    payload = {
+        # 'age' is completely missing! (Should pass because NoneType is in the tuple)
+        # Provided as null/None (Should pass)
+        "nickname": None,
+        # ERROR: Provided a boolean, expects str or int        
+        "status": True           
+    }
+    
+    errors = compare_payload(schema, payload)
+    
+    assert len(errors) == 1
+    assert errors[0] == {"path": "status", "expected": "('str', 'int')", "actual": "bool"}

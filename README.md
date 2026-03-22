@@ -13,8 +13,10 @@ The core recursive validation engine, Pydantic extractor, and public API are com
 ## 🌟 Features
 * **Pydantic Native:** Define your data contracts using standard Pydantic `BaseModel` classes.
 * **Recursive Type Validation:** Deeply inspects nested dictionaries and payloads without flattening them.
-* **Path Tracking:** Returns exact dot-notation breadcrumbs for schema drift (e.g., `user.address.zip_code`).
-* **Zero Bloat:** Built to do one thing diffing data schemas.
+* **Array Support:** Natively validates items inside `list[Type]` arrays.
+* **Optional Forgiveness:** Gracefully handles missing keys or `None` values for `Optional` and `Union` types.
+* **Path Tracking:** Returns exact dot-notation breadcrumbs for schema drift (e.g., `user.address.zip_code`, `nodes[1].ip`).
+* **Zero Bloat:** Built to do one thing—diffing data schemas.
 
 ---
 
@@ -105,6 +107,34 @@ Output:
 
 ```json
 [{"path": "nodes[1].is_active", "expected": "bool", "actual": "str"}]
+```
+
+### 4. Optional and Union Types
+rdce gracefully handles optional fields. Missing keys or explicit None values will not trigger false positives if the contract allows them.
+
+```python
+from typing import Optional
+
+class UserProfile(BaseModel):
+    username: str
+    # Modern Python 3.10+ syntax
+    age: int | None
+    # Classic typing syntax              
+    nickname: Optional[str]      
+
+payload = {
+    # 'age' is completely missing - ALLOWED!
+    "username": "bob_builder",
+    # Explicitly null - ALLOWED!
+    "nickname": None             
+}
+
+errors = enforce_contract(UserProfile, payload)
+```
+
+```json
+# Output: [] (Perfectly valid payload)
+[]
 ```
 
 ---
