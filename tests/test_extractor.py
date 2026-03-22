@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 from rdce.extractor import extract_schema
@@ -58,23 +60,21 @@ def test_extract_list_models():
     assert schema == {"addresses": [{"city": "str"}]}
 
 
-from typing import Optional
-
 def test_extract_optional_and_union_types():
     class UserProfile(BaseModel):
         username: str
         # Adding both ways of handling optional
         # to check library compatibility
-        
+
         # The modern Python 3.10+ syntax
         age: int | None
-        # The classic typing module syntax              
-        nickname: Optional[str]      
-        
+        # The classic typing module syntax
+        nickname: Optional[str]
+
     schema = extract_schema(UserProfile)
-    
+
     assert schema == {
         "username": "str",
         "age": ("int", "NoneType"),
-        "nickname": ("str", "NoneType")
+        "nickname": ("str", "NoneType"),
     }
