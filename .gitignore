@@ -210,3 +210,6 @@ __marimo__/
 .coverage
 htmlcov/
 coverage.xml
+
+# Local testing files
+playground.py
