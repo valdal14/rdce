@@ -1,6 +1,6 @@
 [project]
 name = "rdce"
-version = "0.1.0"
+version = "0.2.0"
 description = "Runtime Data Contract Enforcer"
 authors = [
     {name = "Valerio DAlessio",email = "valdal14@gmail.com"}
