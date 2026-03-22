@@ -20,7 +20,6 @@ The core recursive validation engine, Pydantic extractor, and public API are com
 
 ## 📦 Installation
 
-*(Note: Pending PyPI release)*
 ```bash
 pip install rdce
 # Or using poetry
@@ -77,6 +76,38 @@ Output:
   {"path": "address.zip_code", "expected": "int", "actual": "str"}
 ]
 ```
+
+### 3. Validating Arrays and Lists
+`rdce` natively supports generic aliases like `list[str]` and lists of nested models. The engine will evaluate every item in the payload array and return the exact index of the violation.
+
+```python
+class ServerNode(BaseModel):
+    ip_address: str
+    is_active: bool
+
+class Cluster(BaseModel):
+    cluster_name: str
+    nodes: list[ServerNode]
+
+# Payload with an error inside the array at index 1
+payload = {
+    "cluster_name": "eu-west-db",
+    "nodes": [
+        {"ip_address": "10.0.0.1", "is_active": True},
+        {"ip_address": "10.0.0.2", "is_active": "yes"}
+    ]
+}
+
+errors = enforce_contract(Cluster, payload)
+```
+
+Output:
+
+```json
+[{"path": "nodes[1].is_active", "expected": "bool", "actual": "str"}]
+```
+
+---
 
 ## 🤝 Contributing
 We welcome contributions! To set up the project locally:
