@@ -139,6 +139,22 @@ errors = enforce_contract(UserProfile, payload)
 
 ---
 
+### 5. Strict Mode Validation
+By default, `rdce` ignores extra keys in the payload. To flag injected or unexpected keys that are not defined in your schema, enable `strict=True`.
+
+```python
+payload = {
+    "username": "bob_builder",
+    # INJECTED KEY
+    "is_admin": True
+}
+
+errors = enforce_contract(UserProfile, payload, strict=True)
+# Output: [{"path": "is_admin", "expected": "UNEXPECTED_KEY", "actual": "bool"}]
+```
+
+---
+
 ## 🤝 Contributing
 We welcome contributions! To set up the project locally:
 
