@@ -86,7 +86,9 @@ def compare_payload(
 
     return errors
 
+
 # NOTE: - Internal Helper Methods #################################################################
+
 
 def _build_error(path: str, expected_type: str, actual: str) -> dict[str, str]:
     """
@@ -102,11 +104,9 @@ def _build_error(path: str, expected_type: str, actual: str) -> dict[str, str]:
     """
     return {"path": path, "expected": expected_type, "actual": actual}
 
+
 def _strict_mode_check(
-    schema: dict[str, Any], 
-    payload: dict[str, Any], 
-    current_path: str = "", 
-    strict: bool = False
+    schema: dict[str, Any], payload: dict[str, Any], current_path: str = "", strict: bool = False
 ) -> list[dict[str, str]]:
     """
     Checks the payload for injected or unexpected keys not defined in the schema.
@@ -121,7 +121,7 @@ def _strict_mode_check(
         list[dict[str, str]]: Empty if strict mode is False or the key is in the schema
     """
     strict_errors = []
-    
+
     if strict:
         for payload_key, payload_value in payload.items():
             if payload_key not in schema:
@@ -130,9 +130,9 @@ def _strict_mode_check(
                     path = payload_key
                 else:
                     path = f"{current_path}.{payload_key}"
-                
+
                 # Log the unexpected key
                 actual_type_string = type(payload_value).__name__
                 strict_errors.append(_build_error(path, "UNEXPECTED_KEY", actual_type_string))
-                
+
     return strict_errors
