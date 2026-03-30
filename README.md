@@ -155,6 +155,26 @@ errors = enforce_contract(UserProfile, payload, strict=True)
 
 ---
 
+### 6. Fast Flat-File Validation (CSV Header Checking)
+For data engineering pipelines (like Airflow or Dagster), `rdce` can validate flat-file schema drift without loading the entire file into memory. The `enforce_csv_structure` adapter reads only the first row of a CSV and cross-references the column names against your Pydantic contract.
+
+```python
+from rdce.adapters import enforce_csv_structure
+from pydantic import BaseModel
+from typing import Optional
+
+class PipelineContract(BaseModel):
+    id: int
+    username: str
+    email: Optional[str]
+
+# Instantly catches if an upstream database dropped the 'email' column
+errors = enforce_csv_structure(PipelineContract, "massive_export.csv", delimiter=",")
+# Output: [{"path": "email", "expected": "COLUMN_PRESENT", "actual": "MISSING"}]
+```
+
+---
+
 ## 🤝 Contributing
 We welcome contributions! To set up the project locally:
 

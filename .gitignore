@@ -213,3 +213,5 @@ coverage.xml
 
 # Local testing files
 playground.py
+playground_csv.py
+*.csv
