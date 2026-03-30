@@ -237,4 +237,3 @@ We welcome contributions! To set up the project locally:
     poetry run pytest
 7 Ensure 100% test coverage before submitting a Pull Request.
 ```
-
