@@ -175,6 +175,52 @@ errors = enforce_csv_structure(PipelineContract, "massive_export.csv", delimiter
 
 ---
 
+### 7. Streaming CSV Validation (Deep Scan & Dead-Letter Queues)
+When you need to validate data types row-by-row in massive flat files, loading them into memory will cause OOM (Out of Memory) crashes. 
+
+The `stream_csv_contract` adapter acts as a Python Generator. It streams the file one row at a time, attempts basic type coercion, and `yields` only the rows that fail validation. 
+
+This allows you to easily route bad data to a dead-letter queue while letting your pipeline continue:
+
+```python
+import csv
+from rdce.adapters import stream_csv_contract
+from pydantic import BaseModel
+
+class Employee(BaseModel):
+    id: int
+    name: str
+    is_active: bool
+
+# Stream a file, handling enterprise CSV encodings and custom delimiters
+bad_rows = stream_csv_contract(
+    Employee, 
+    "massive_export.csv", 
+    delimiter=",", 
+    encoding="utf-8-sig", # Automatically strips invisible BOM characters from Excel/Enterprise exports
+    ignore_nulls=False
+)
+
+# Route the rejected rows to a separate file for review
+with open("rejects.csv", "w", newline="") as f:
+    writer = None
+    
+    for bad_row_payload in bad_rows:
+        # The payload contains the line number, the exact raw row, and the errors
+        raw_row = bad_row_payload["raw_row"]
+        errors = bad_row_payload["errors"]
+        
+        # Initialize the CSV writer on the first bad row we find
+        if writer is None:
+            writer = csv.DictWriter(f, fieldnames=raw_row.keys())
+            writer.writeheader()
+            
+        writer.writerow(raw_row)
+        print(f"Row {bad_row_payload['line_num']} failed: {errors}")
+```
+
+---
+
 ## 🤝 Contributing
 We welcome contributions! To set up the project locally:
 
