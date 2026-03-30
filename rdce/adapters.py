@@ -1,10 +1,13 @@
 import csv
+import logging
 from typing import Any, Generator
 
 from pydantic import BaseModel
 
 from .error_factory import build_error
 from .extractor import extract_schema
+
+logger = logging.getLogger("rdce")
 
 
 def enforce_csv_structure(
@@ -76,14 +79,22 @@ def stream_csv_contract(
     Yields:
         dict: A payload containing `line_num`, the `raw_row` dictionary, and `errors`.
     """
+
+    logger.info(f"Starting CSV stream validation for file: {file_path}")
+    logger.debug(
+        f"Using null_markers: {null_markers} | ignore_nulls: {ignore_nulls} | encoding: {encoding}"
+    )
+
     if null_markers is None:
         null_markers = ["", "NaN", "\\N"]
 
+    logger.debug(f"Extracting schema for contract: {contract.__name__}")
     schema = extract_schema(contract)
 
-    # Fast-Fail Structural Check (Pass encoding down!)
+    logger.debug("Running pre-stream structural check...")
     structural_errors = enforce_csv_structure(contract, file_path, encoding=encoding, **kwargs)
     if structural_errors:
+        logger.warning(f"Structural check failed for {file_path}. Aborting stream.")
         yield {"line_num": 1, "raw_row": {}, "errors": structural_errors}
         # Abort the stream completely!
         return

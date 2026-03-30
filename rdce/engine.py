@@ -1,6 +1,9 @@
+import logging
 from typing import Any
 
 from .error_factory import build_error
+
+logger = logging.getLogger("rdce")
 
 
 def compare_payload(
@@ -18,6 +21,10 @@ def compare_payload(
     Returns:
         list[dict[str, str]]: A list of validation errors. Returns an empty list if perfectly matched.
     """
+    # Only log at the very beginning of the validation
+    if current_path == "":
+        logger.debug(f"Starting payload validation. Strict mode: {strict}")
+
     errors = []
 
     # Strict mode check
@@ -39,6 +46,7 @@ def compare_payload(
                 continue
             else:
                 # Log the missing key error
+                logger.debug(f"Validation failure: Missing required key '{path}'")
                 errors.append(build_error(path, str(expected_type), "MISSING"))
                 continue
 
@@ -54,6 +62,9 @@ def compare_payload(
         elif isinstance(expected_type, list):
             # Ensure the payload actually gave us a list
             if not isinstance(actual_value, list):
+                logger.debug(
+                    f"Validation failure: '{path}' expected list, got {type(actual_value).__name__}"
+                )
                 errors.append(build_error(path, "list", type(actual_value).__name__))
                 continue
 
@@ -71,6 +82,9 @@ def compare_payload(
                 else:
                     item_type_string = type(item).__name__
                     if item_type_string != inner_schema:
+                        logger.debug(
+                            f"Validation failure: '{list_path}' expected {inner_schema}, got {item_type_string}"
+                        )
                         errors.append(build_error(list_path, inner_schema, item_type_string))
 
         # Check if this is an Optional/Union (The schema expects a tuple of choices)
@@ -78,12 +92,18 @@ def compare_payload(
             actual_type_string = type(actual_value).__name__
             # If the actual type isn't one of the allowed choices in the tuple log the error.
             if actual_type_string not in expected_type:
+                logger.debug(
+                    f"Validation failure: '{path}' expected {expected_type}, got {actual_type_string}"
+                )
                 errors.append(build_error(path, str(expected_type), actual_type_string))
 
         # Normal primitive (leaf node)
         else:
             actual_type_string = type(actual_value).__name__
             if actual_type_string != expected_type:
+                logger.debug(
+                    f"Validation failure: '{path}' expected {expected_type}, got {actual_type_string}"
+                )
                 errors.append(build_error(path, expected_type, actual_type_string))
 
     return errors
@@ -120,6 +140,7 @@ def _strict_mode_check(
 
                 # Log the unexpected key
                 actual_type_string = type(payload_value).__name__
+                logger.warning(f"Strict Mode violation: Unexpected key '{path}' detected.")
                 strict_errors.append(build_error(path, "UNEXPECTED_KEY", actual_type_string))
 
     return strict_errors
