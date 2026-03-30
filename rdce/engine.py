@@ -1,5 +1,7 @@
 from typing import Any
 
+from .error_factory import build_error
+
 
 def compare_payload(
     schema: dict[str, Any], payload: dict[str, Any], current_path: str = "", strict: bool = False
@@ -37,7 +39,7 @@ def compare_payload(
                 continue
             else:
                 # Log the missing key error
-                errors.append(_build_error(path, str(expected_type), "MISSING"))
+                errors.append(build_error(path, str(expected_type), "MISSING"))
                 continue
 
         # The key exists we can safely get the value
@@ -52,7 +54,7 @@ def compare_payload(
         elif isinstance(expected_type, list):
             # Ensure the payload actually gave us a list
             if not isinstance(actual_value, list):
-                errors.append(_build_error(path, "list", type(actual_value).__name__))
+                errors.append(build_error(path, "list", type(actual_value).__name__))
                 continue
 
             # The schema list only has ONE rule (e.g., ["str"] or [{"ip": "str"}])
@@ -69,40 +71,25 @@ def compare_payload(
                 else:
                     item_type_string = type(item).__name__
                     if item_type_string != inner_schema:
-                        errors.append(_build_error(list_path, inner_schema, item_type_string))
+                        errors.append(build_error(list_path, inner_schema, item_type_string))
 
         # Check if this is an Optional/Union (The schema expects a tuple of choices)
         elif isinstance(expected_type, tuple):
             actual_type_string = type(actual_value).__name__
             # If the actual type isn't one of the allowed choices in the tuple log the error.
             if actual_type_string not in expected_type:
-                errors.append(_build_error(path, str(expected_type), actual_type_string))
+                errors.append(build_error(path, str(expected_type), actual_type_string))
 
         # Normal primitive (leaf node)
         else:
             actual_type_string = type(actual_value).__name__
             if actual_type_string != expected_type:
-                errors.append(_build_error(path, expected_type, actual_type_string))
+                errors.append(build_error(path, expected_type, actual_type_string))
 
     return errors
 
 
 # NOTE: - Internal Helper Methods #################################################################
-
-
-def _build_error(path: str, expected_type: str, actual: str) -> dict[str, str]:
-    """
-    Constructs a standardized validation error dictionary.
-
-    Args:
-        path (str): The dot-notation breadcrumb path of the failing field.
-        expected_type (str): The Python type expected by the schema.
-        actual (str): The actual type received, or "MISSING" if not found.
-
-    Returns:
-        dict[str, str]: The formatted error payload.
-    """
-    return {"path": path, "expected": expected_type, "actual": actual}
 
 
 def _strict_mode_check(
@@ -133,6 +120,6 @@ def _strict_mode_check(
 
                 # Log the unexpected key
                 actual_type_string = type(payload_value).__name__
-                strict_errors.append(_build_error(path, "UNEXPECTED_KEY", actual_type_string))
+                strict_errors.append(build_error(path, "UNEXPECTED_KEY", actual_type_string))
 
     return strict_errors
