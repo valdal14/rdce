@@ -2,7 +2,7 @@ from typing import Any
 
 
 def compare_payload(
-    schema: dict[str, Any], payload: dict[str, Any], current_path: str = ""
+    schema: dict[str, Any], payload: dict[str, Any], current_path: str = "", strict: bool = False
 ) -> list[dict[str, str]]:
     """
     Recursively compares a payload dictionary against an expected schema dictionary.
@@ -11,12 +11,18 @@ def compare_payload(
         schema (dict[str, Any]): The expected data contract defining fields and types.
         payload (dict[str, Any]): The actual incoming data payload.
         current_path (str, optional): The current path traversal state. Defaults to "".
+        strict (bool, optional): If True, flags extra keys in the payload not defined in the schema.
 
     Returns:
         list[dict[str, str]]: A list of validation errors. Returns an empty list if perfectly matched.
     """
     errors = []
 
+    # Strict mode check
+    strict_errors = _strict_mode_check(schema, payload, current_path, strict)
+    errors.extend(strict_errors)
+
+    # Standard mode iteration
     for key, expected_type in schema.items():
         # Update the breadcrumb path
         if current_path == "":
@@ -39,7 +45,7 @@ def compare_payload(
 
         # Check if it a branch (The schema expects a nested dictionary)
         if isinstance(expected_type, dict):
-            res = compare_payload(expected_type, actual_value, path)
+            res = compare_payload(expected_type, actual_value, path, strict)
             errors.extend(res)
 
         # Check if this is an Array (The schema expects a list)
@@ -58,7 +64,7 @@ def compare_payload(
 
                 # If the inner rule is a dictionary, recurse.
                 if isinstance(inner_schema, dict):
-                    errors.extend(compare_payload(inner_schema, item, list_path))
+                    errors.extend(compare_payload(inner_schema, item, list_path, strict))
                 # Otherwise, it's a primitive and we can check its type.
                 else:
                     item_type_string = type(item).__name__
@@ -81,6 +87,9 @@ def compare_payload(
     return errors
 
 
+# NOTE: - Internal Helper Methods #################################################################
+
+
 def _build_error(path: str, expected_type: str, actual: str) -> dict[str, str]:
     """
     Constructs a standardized validation error dictionary.
@@ -94,3 +103,36 @@ def _build_error(path: str, expected_type: str, actual: str) -> dict[str, str]:
         dict[str, str]: The formatted error payload.
     """
     return {"path": path, "expected": expected_type, "actual": actual}
+
+
+def _strict_mode_check(
+    schema: dict[str, Any], payload: dict[str, Any], current_path: str = "", strict: bool = False
+) -> list[dict[str, str]]:
+    """
+    Checks the payload for injected or unexpected keys not defined in the schema.
+
+    Args:
+        schema (dict[str, Any]): The expected data contract defining fields and types.
+        payload (dict[str, Any]): The actual incoming data payload.
+        current_path (str, optional): The current path traversal state. Defaults to "".
+        strict (bool, optional): If True, flags extra keys in the payload not defined in the schema.
+
+    Returns:
+        list[dict[str, str]]: Empty if strict mode is False or the key is in the schema
+    """
+    strict_errors = []
+
+    if strict:
+        for payload_key, payload_value in payload.items():
+            if payload_key not in schema:
+                # Build the path for the injected key
+                if current_path == "":
+                    path = payload_key
+                else:
+                    path = f"{current_path}.{payload_key}"
+
+                # Log the unexpected key
+                actual_type_string = type(payload_value).__name__
+                strict_errors.append(_build_error(path, "UNEXPECTED_KEY", actual_type_string))
+
+    return strict_errors

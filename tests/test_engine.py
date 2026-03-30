@@ -69,3 +69,56 @@ def test_compare_optional_and_union_types():
 
     assert len(errors) == 1
     assert errors[0] == {"path": "status", "expected": "('str', 'int')", "actual": "bool"}
+
+
+def test_compare_strict_mode():
+    schema = {"username": "str", "profile": {"age": "int"}}
+
+    payload = {
+        "username": "admin",
+        # INJECTED KEY (Root level)
+        "is_superuser": True,
+        "profile": {
+            "age": 30,
+            # INJECTED KEY (Nested level)
+            "role": "manager",
+        },
+    }
+
+    # Standard mode should ignore the extra keys and pass perfectly
+    standard_errors = compare_payload(schema, payload)
+    assert len(standard_errors) == 0
+
+    # Strict mode should catch both injected keys
+    strict_errors = compare_payload(schema, payload, strict=True)
+    assert len(strict_errors) == 2
+
+    paths = [err["path"] for err in strict_errors]
+    assert "is_superuser" in paths
+    assert "profile.role" in paths
+
+    # Verify the error format for the first injected key
+    assert strict_errors[0] == {
+        "path": "is_superuser",
+        "expected": "UNEXPECTED_KEY",
+        "actual": "bool",
+    }
+
+
+def test_strict_mode_multiple_injected_keys():
+    schema = {"username": "str"}
+
+    payload = {
+        "username": "admin",
+        "is_superuser": True,  # Injected Key 1
+        "bypass_auth": True,  # Injected Key 2
+    }
+
+    errors = compare_payload(schema, payload, strict=True)
+
+    # It will only find 1 error and exit, ignoring the second key entirely!
+    assert len(errors) == 2
+
+    paths = [err["path"] for err in errors]
+    assert "is_superuser" in paths
+    assert "bypass_auth" in paths
