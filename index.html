@@ -1,0 +1,954 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A blazing fast, zero-dependency contract enforcement engine for Python dictionaries and flat-files.">
+      
+      
+      
+      
+      
+        <link rel="next" href="api/engine/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>RDCE Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rdce" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="RDCE Documentation" class="md-header__button md-logo" aria-label="RDCE Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RDCE Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="RDCE Documentation" class="md-nav__button md-logo" aria-label="RDCE Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RDCE Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌟 Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-define-your-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Define your Contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enforce-the-payload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Enforce the Payload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-validating-arrays-and-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validating Arrays and Lists
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-optional-and-union-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Optional and Union Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-strict-mode-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Strict Mode Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-fast-flat-file-validation-csv-header-checking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Fast Flat-File Validation (CSV Header Checking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-streaming-csv-validation-deep-scan-dead-letter-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Streaming CSV Validation (Deep Scan &amp; Dead-Letter Queues)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤝 Contributing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌟 Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Quick Start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-define-your-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Define your Contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enforce-the-payload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Enforce the Payload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-validating-arrays-and-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Validating Arrays and Lists
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-optional-and-union-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Optional and Union Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-strict-mode-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Strict Mode Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-fast-flat-file-validation-csv-header-checking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Fast Flat-File Validation (CSV Header Checking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-streaming-csv-validation-deep-scan-dead-letter-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Streaming CSV Validation (Deep Scan &amp; Dead-Letter Queues)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤝 Contributing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="rdce">rdce</h1>
+<p><a href="https://github.com/valdal14/rdce/actions/workflows/ci.yml"><img alt="CI Pipeline" src="https://github.com/valdal14/rdce/actions/workflows/ci.yml/badge.svg" /></a>
+<a href="https://valdal14.github.io/rdce/"><img alt="Documentation" src="https://img.shields.io/badge/docs-MkDocs-blue.svg" /></a>
+<img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-blue?style=flat&amp;logo=python" />
+<img alt="License" src="https://img.shields.io/badge/License-MIT-green" /></p>
+<p><strong>Runtime Data Contract Enforcer</strong>: A lightweight Python 3 library for recursively validating and diffing nested JSON payloads against explicit Pydantic schemas.</p>
+<h2 id="current-status">Current Status</h2>
+<p>🚀 <strong>v0.2.0 Complete</strong> 🚀
+The core recursive validation engine, Pydantic extractor, and public API are complete and fully tested with 100% coverage.</p>
+<h2 id="features">🌟 Features</h2>
+<ul>
+<li><strong>Pydantic Native:</strong> Define your data contracts using standard Pydantic <code>BaseModel</code> classes.</li>
+<li><strong>Recursive Type Validation:</strong> Deeply inspects nested dictionaries and payloads without flattening them.</li>
+<li><strong>Array Support:</strong> Natively validates items inside <code>list[Type]</code> arrays.</li>
+<li><strong>Optional Forgiveness:</strong> Gracefully handles missing keys or <code>None</code> values for <code>Optional</code> and <code>Union</code> types.</li>
+<li><strong>Path Tracking:</strong> Returns exact dot-notation breadcrumbs for schema drift (e.g., <code>user.address.zip_code</code>, <code>nodes[1].ip</code>).</li>
+<li><strong>Zero Bloat:</strong> Built to do one thing—diffing data schemas.</li>
+</ul>
+<hr />
+<h2 id="installation">📦 Installation</h2>
+<pre><code class="language-bash">pip install rdce
+# Or using poetry
+poetry add rdce
+</code></pre>
+<hr />
+<h2 id="quick-start">🚀 Quick Start</h2>
+<p><code>rdce</code> is designed to be a transparent bridge between your Pydantic models and incoming, untrusted dictionary payloads.</p>
+<h3 id="1-define-your-contract">1. Define your Contract</h3>
+<p>Use standard Pydantic models. Nested models are fully supported.</p>
+<pre><code class="language-python">from pydantic import BaseModel
+
+class Address(BaseModel):
+    city: str
+    zip_code: int
+
+class UserContract(BaseModel):
+    username: str
+    is_active: bool
+    address: Address
+</code></pre>
+<h3 id="2-enforce-the-payload">2. Enforce the Payload</h3>
+<p>Pass the model class and your raw dictionary payload into the <code>enforce_contract</code> engine.</p>
+<pre><code class="language-python">from rdce import enforce_contract
+
+# A payload with schema drift (wrong type for zip_code, missing is_active)
+incoming_payload = {
+    &quot;username&quot;: &quot;alice_data&quot;,
+    &quot;address&quot;: {
+        &quot;city&quot;: &quot;London&quot;,
+        &quot;zip_code&quot;: &quot;E1 6AN&quot; # Expected int, got string
+    }
+}
+
+errors = enforce_contract(UserContract, incoming_payload)
+
+for error in errors:
+    print(error)
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-json">[
+  {&quot;path&quot;: &quot;is_active&quot;, &quot;expected&quot;: &quot;bool&quot;, &quot;actual&quot;: &quot;MISSING&quot;},
+  {&quot;path&quot;: &quot;address.zip_code&quot;, &quot;expected&quot;: &quot;int&quot;, &quot;actual&quot;: &quot;str&quot;}
+]
+</code></pre>
+<h3 id="3-validating-arrays-and-lists">3. Validating Arrays and Lists</h3>
+<p><code>rdce</code> natively supports generic aliases like <code>list[str]</code> and lists of nested models. The engine will evaluate every item in the payload array and return the exact index of the violation.</p>
+<pre><code class="language-python">class ServerNode(BaseModel):
+    ip_address: str
+    is_active: bool
+
+class Cluster(BaseModel):
+    cluster_name: str
+    nodes: list[ServerNode]
+
+# Payload with an error inside the array at index 1
+payload = {
+    &quot;cluster_name&quot;: &quot;eu-west-db&quot;,
+    &quot;nodes&quot;: [
+        {&quot;ip_address&quot;: &quot;10.0.0.1&quot;, &quot;is_active&quot;: True},
+        {&quot;ip_address&quot;: &quot;10.0.0.2&quot;, &quot;is_active&quot;: &quot;yes&quot;}
+    ]
+}
+
+errors = enforce_contract(Cluster, payload)
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-json">[{&quot;path&quot;: &quot;nodes[1].is_active&quot;, &quot;expected&quot;: &quot;bool&quot;, &quot;actual&quot;: &quot;str&quot;}]
+</code></pre>
+<h3 id="4-optional-and-union-types">4. Optional and Union Types</h3>
+<p>rdce gracefully handles optional fields. Missing keys or explicit None values will not trigger false positives if the contract allows them.</p>
+<pre><code class="language-python">from typing import Optional
+
+class UserProfile(BaseModel):
+    username: str
+    # Modern Python 3.10+ syntax
+    age: int | None
+    # Classic typing syntax              
+    nickname: Optional[str]      
+
+payload = {
+    # 'age' is completely missing - ALLOWED!
+    &quot;username&quot;: &quot;bob_builder&quot;,
+    # Explicitly null - ALLOWED!
+    &quot;nickname&quot;: None             
+}
+
+errors = enforce_contract(UserProfile, payload)
+</code></pre>
+<pre><code class="language-json"># Output: [] (Perfectly valid payload)
+[]
+</code></pre>
+<hr />
+<h3 id="5-strict-mode-validation">5. Strict Mode Validation</h3>
+<p>By default, <code>rdce</code> ignores extra keys in the payload. To flag injected or unexpected keys that are not defined in your schema, enable <code>strict=True</code>.</p>
+<pre><code class="language-python">payload = {
+    &quot;username&quot;: &quot;bob_builder&quot;,
+    # INJECTED KEY
+    &quot;is_admin&quot;: True
+}
+
+errors = enforce_contract(UserProfile, payload, strict=True)
+# Output: [{&quot;path&quot;: &quot;is_admin&quot;, &quot;expected&quot;: &quot;UNEXPECTED_KEY&quot;, &quot;actual&quot;: &quot;bool&quot;}]
+</code></pre>
+<hr />
+<h3 id="6-fast-flat-file-validation-csv-header-checking">6. Fast Flat-File Validation (CSV Header Checking)</h3>
+<p>For data engineering pipelines (like Airflow or Dagster), <code>rdce</code> can validate flat-file schema drift without loading the entire file into memory. The <code>enforce_csv_structure</code> adapter reads only the first row of a CSV and cross-references the column names against your Pydantic contract.</p>
+<pre><code class="language-python">from rdce.adapters import enforce_csv_structure
+from pydantic import BaseModel
+from typing import Optional
+
+class PipelineContract(BaseModel):
+    id: int
+    username: str
+    email: Optional[str]
+
+# Instantly catches if an upstream database dropped the 'email' column
+errors = enforce_csv_structure(PipelineContract, &quot;massive_export.csv&quot;, delimiter=&quot;,&quot;)
+# Output: [{&quot;path&quot;: &quot;email&quot;, &quot;expected&quot;: &quot;COLUMN_PRESENT&quot;, &quot;actual&quot;: &quot;MISSING&quot;}]
+</code></pre>
+<hr />
+<h3 id="7-streaming-csv-validation-deep-scan-dead-letter-queues">7. Streaming CSV Validation (Deep Scan &amp; Dead-Letter Queues)</h3>
+<p>When you need to validate data types row-by-row in massive flat files, loading them into memory will cause OOM (Out of Memory) crashes. </p>
+<p>The <code>stream_csv_contract</code> adapter acts as a Python Generator. It streams the file one row at a time, attempts basic type coercion, and <code>yields</code> only the rows that fail validation. </p>
+<p>This allows you to easily route bad data to a dead-letter queue while letting your pipeline continue:</p>
+<pre><code class="language-python">import csv
+from rdce.adapters import stream_csv_contract
+from pydantic import BaseModel
+
+class Employee(BaseModel):
+    id: int
+    name: str
+    is_active: bool
+
+# Stream a file, handling enterprise CSV encodings and custom delimiters
+bad_rows = stream_csv_contract(
+    Employee, 
+    &quot;massive_export.csv&quot;, 
+    delimiter=&quot;,&quot;, 
+    encoding=&quot;utf-8-sig&quot;, # Automatically strips invisible BOM characters from Excel/Enterprise exports
+    ignore_nulls=False
+)
+
+# Route the rejected rows to a separate file for review
+with open(&quot;rejects.csv&quot;, &quot;w&quot;, newline=&quot;&quot;) as f:
+    writer = None
+
+    for bad_row_payload in bad_rows:
+        # The payload contains the line number, the exact raw row, and the errors
+        raw_row = bad_row_payload[&quot;raw_row&quot;]
+        errors = bad_row_payload[&quot;errors&quot;]
+
+        # Initialize the CSV writer on the first bad row we find
+        if writer is None:
+            writer = csv.DictWriter(f, fieldnames=raw_row.keys())
+            writer.writeheader()
+
+        writer.writerow(raw_row)
+        print(f&quot;Row {bad_row_payload['line_num']} failed: {errors}&quot;)
+</code></pre>
+<hr />
+<h2 id="contributing">🤝 Contributing</h2>
+<p>We welcome contributions! To set up the project locally:</p>
+<pre><code class="language-bash">1 Clone the repository.
+2 Initialize the environment: poetry install
+3 We strictly enforce formatting and linting via Ruff:
+4 Linter: 
+    poetry run python3 -m ruff check .
+5 Formatter: 
+    poetry run python3 -m ruff format .
+6 Run the test suite: 
+    poetry run pytest
+7 Ensure 100% test coverage before submitting a Pull Request.
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": [], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
